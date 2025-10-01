@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import { LoginService } from './services';
 
 @Component({
   selector: 'app-root',
@@ -11,11 +12,14 @@ export class AppComponent implements OnInit {
   showLogin: boolean = true;
   showInserSection: boolean = false;
 
-  constructor(private http: HttpClient){}
+  constructor(
+    private http: HttpClient,
+    private loginService: LoginService
+  ){}
 
   ngOnInit(): void {
-      this.showLogin = this.isUserLogged() ? false : true;
-      this.showInserSection = this.showLogin ? false : true;
+    this.showLogin = this.isUserLogged() ? false : true;
+    this.showInserSection = this.showLogin ? false : true;
   }
 
   private isUserLogged(): boolean{
@@ -23,13 +27,7 @@ export class AppComponent implements OnInit {
   }
 
   login(user: any){
-    this.http.post(
-      'http://localhost:3000/api/auth/login',
-      {
-        username: user.userName,
-        password: user.password
-      }
-    ).subscribe({
+    this.loginService.login(user).subscribe({
       next: () => {
         this.showLogin = false;
         this.showInserSection = true;

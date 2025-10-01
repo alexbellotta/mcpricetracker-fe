@@ -6,6 +6,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { LoginComponent } from './components/login/login.component';
 import { InsertProductComponent } from './components/insert-product/insert-product.component';
+import { LoginService } from './services';
 
 @NgModule({
   declarations: [
@@ -19,7 +20,7 @@ import { InsertProductComponent } from './components/insert-product/insert-produ
     FormsModule,
     HttpClientModule
   ],
-  providers: [],
+  providers: [LoginService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
