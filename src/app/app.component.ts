@@ -1,43 +1,55 @@
 import { HttpClient } from '@angular/common/http';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   title = 'bigmacprice-fe';
-  loggedIn: boolean = false;
-  username: string = '';
-  password: string = '';
-  itemName: string = '';
-  itemPrice: number | null = 0;
+  showLogin: boolean = true;
+  showInserSection: boolean = false;
 
   constructor(private http: HttpClient){}
 
-  login(){
+  ngOnInit(): void {
+      this.showLogin = this.isUserLogged() ? false : true;
+      this.showInserSection = this.showLogin ? false : true;
+  }
+
+  private isUserLogged(): boolean{
+    return !!sessionStorage.getItem('user');
+  }
+
+  login(user: any){
     this.http.post(
       'http://localhost:3000/api/auth/login',
       {
-        username: this.username,
-        password: this.password
+        username: user.userName,
+        password: user.password
       }
     ).subscribe({
-      next: () => this.loggedIn = true,
-      error: () => alert('Invalid credentials!')
+      next: () => {
+        this.showLogin = false;
+        this.showInserSection = true;
+        sessionStorage.setItem('user', user.userName)
+      },
+      error: () => {
+        this.showLogin = true;
+        this.showInserSection = false;
+        alert('Invalid credentials!');
+      }
     })
   }
 
-  add(){
+  add(product: any){
     this.http.post('http://localhost:3000/api/hamburgers/add', {
-      name: this.itemName,
-      price: this.itemPrice
+      name: product.itemName,
+      price: product.itemPrice
     }).subscribe({
       next: () => {
         alert('Item added!');
-        this.itemName = '';
-        this.itemPrice = null;
       },
       error: err => alert('Error adding item')
     });

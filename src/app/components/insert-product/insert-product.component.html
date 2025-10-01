@@ -1,0 +1,6 @@
+<div *ngIf="showInserSection">
+    <h3>Add Item</h3>
+    <input [(ngModel)]="itemName" placeholder="Item name" />
+    <input [(ngModel)]="itemPrice" type="number" placeholder="Pricee" />
+    <button (click)="add()">Add</button>
+</div>
