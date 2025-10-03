@@ -1,6 +1,9 @@
 <div *ngIf="showLogin">
-    <h3>Login</h3>
-    <input [(ngModel)]="username" placeholder="Username" />
-    <input [(ngModel)]="password" type="password" placeholder="Password" />
-    <button (click)="login()">Login</button>
+    <app-login-form
+        [showLoginForm]="showLoginForm">
+    </app-login-form>
+    <app-register-form>
+
+    </app-register-form>
+    <span (click)="goToRegister()">Non hai un account? Clicca <strong>QUI</strong> per registrarti</span>
 </div>
